@@ -7,6 +7,8 @@ interface LandsInterface
 
     public function user_store($request);
 
+    public function user_show($item);
+
     public function user_update($item,$request);
 
     public function user_delete($item);

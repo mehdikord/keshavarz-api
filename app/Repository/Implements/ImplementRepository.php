@@ -179,6 +179,7 @@ class ImplementRepository implements ImplementInterface
         if (request()->filled('category')){
             $data->where('implement_category_id',request('category'));
         }
+        
         return response_success($data->get());
     }
 

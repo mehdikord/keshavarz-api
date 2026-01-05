@@ -1,6 +1,7 @@
 <?php
 namespace App\Repository\Search;
 use App\Interfaces\Search\SearchInterface;
+use App\Models\Implement;
 use App\Models\Request;
 use App\Models\Request_User;
 use App\Models\Search;
@@ -43,15 +44,15 @@ class SearchRepository implements SearchInterface
                 return response_custom_error('درحال حاضر درخواستی با این اطلاعات در انتظار تایید خدمات دهنده میباشد !');
             }
 
-            $location = json_decode($land->location, false, 512, JSON_THROW_ON_ERROR);
-            if ($location->lat && $location->lng){
-                $location = [$location->lat, $location->lng];
+            $location = explode(',',json_decode($land->location, true));
+            if ($location[0] && $location[1]){
+                $location = [$location[0], $location[1]];
             }
 
             foreach ($users->get() as $user){
-                $user_location =  json_decode($user->search_location, false, 512, JSON_THROW_ON_ERROR);
-                if ($user_location->lat && $user_location->lng){
-                    $user_location = [$user_location->lat, $user_location->lng];
+                $user_location =  explode(',',json_decode($user->search_location, true));
+                if ($user_location[0] && $user_location[1]){
+                    $user_location = [$user_location[0], $user_location[1]];
                 }
                 $dis = location_distance($user_location,$location);
 
@@ -107,11 +108,17 @@ class SearchRepository implements SearchInterface
         }
 
 //        log_search_store(auth('users')->id(),$request->implement_id,$request->location,count($result));
+        $data = [
+            'data' => $result,
+            'land' => [
+                'id' => $land->id,
+                'name' => $land->title,
+                'area' => $area,
+            ],
+            'implement' => Implement::where('id',$request->implement_id)->select(['id','name','image'])->first(),
+        ];
 
-        return response_success([
-            'result' => $result,
-            'request' => $make_request
-        ]);
+        return response_success($data);
 
     }
 

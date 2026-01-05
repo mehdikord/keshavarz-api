@@ -30,6 +30,11 @@ class LandsRepository implements LandsInterface
 
     }
 
+    public function user_show($item)
+    {
+        return response_success(new LandsIndexResource($item));
+    }
+
     public function user_update($item,$request)
     {
         if ($item->user_id !== auth('users')->id()){

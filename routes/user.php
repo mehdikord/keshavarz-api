@@ -3,6 +3,7 @@ use Illuminate\Support\Facades\Route;
 
 //Auth
 Route::prefix('auth')->group(function (){
+    
     Route::post('',[\App\Http\Controllers\User\Auth\AuthController::class,'login']);
     Route::post('check',[\App\Http\Controllers\User\Auth\AuthController::class,'check']);
 
@@ -50,6 +51,7 @@ Route::middleware(['auth:users'])->group(function (){
 
         Route::get('',[\App\Http\Controllers\User\Lands\LandsController::class,'index']);
         Route::post('',[\App\Http\Controllers\User\Lands\LandsController::class,'store']);
+        Route::get('/{land}',[\App\Http\Controllers\User\Lands\LandsController::class,'show']);
         Route::post('/{land}',[\App\Http\Controllers\User\Lands\LandsController::class,'update']);
         Route::delete('/{land}',[\App\Http\Controllers\User\Lands\LandsController::class,'delete']);
 
@@ -80,6 +82,7 @@ Route::middleware(['auth:users'])->group(function (){
             Route::get('reject/{request}',[\App\Http\Controllers\User\Requests\RequestController::class,'reject']);
 
         });
+
 
     });
 

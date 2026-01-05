@@ -26,6 +26,11 @@ class LandsController extends Controller
         return $this->repository->user_store($request);
     }
 
+    public function show(User_Land $land){
+
+        return $this->repository->user_show($land);
+    }
+
     public function update(User_Land $land, LandsUserStoreRequest $request)
     {
         return $this->repository->user_update($land,$request);
