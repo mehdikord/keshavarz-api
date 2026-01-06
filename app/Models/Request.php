@@ -18,9 +18,6 @@ class Request extends Model
     public const STATUS_CANCELED = 'canceled';
     public const STATUS_DONE = 'done';
 
-    protected $appends=[
-        'search_result_decode','dates_decode'
-    ];
 
     public function user()
     {
@@ -46,21 +43,19 @@ class Request extends Model
         return $this->hasMany(Request_User::class,'request_id');
     }
 
-    public function getSearchResultDecodeAttribute()
+    public function getSearchResultAttribute($value)
     {
-        $data=[];
-        if ($this->search_result){
-            $data = json_decode($this->search_result, false, 512, JSON_THROW_ON_ERROR);
+        if (!empty($value)) {
+            return json_decode($value, true);
         }
-        return $data;
+        return null;
     }
 
-    public function getDatesDecodeAttribute()
+    public function getDatesAttribute($value)
     {
-        $data=[];
-        if ($this->dates){
-            $data = json_decode($this->dates, false, 512, JSON_THROW_ON_ERROR);
+        if (!empty($value)) {
+            return json_decode($value, true);
         }
-        return $data;
+        return null;
     }
 }
